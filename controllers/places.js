@@ -12,6 +12,17 @@ export class PlaceController {
     }
   }
 
+  static async getPlace(req, res) {
+    try {
+      const data = await PlaceModel.getPlace({ id: req.params.id });
+      if (data) return res.json(data);
+      res.status(404).send("not found");
+    } catch (e) {
+      console.log(e);
+      res.status(500).send("error on Controller");
+    }
+  }
+
   static async filterByTag(req, res) {
     const { id: tag } = req.params;
     const { from, rows } = req.query;

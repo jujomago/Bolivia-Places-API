@@ -1,4 +1,4 @@
-export { placesRouter } from "./places";
-export { categoriesRouter } from "./categories";
-export { tagsRouter } from "./tags";
-export { citiesRouter } from "./cities";
+export { placesRouter } from "./places.js";
+export { categoriesRouter } from "./categories.js";
+export { tagsRouter } from "./tags.js";
+export { citiesRouter } from "./cities.js";

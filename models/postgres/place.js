@@ -13,6 +13,27 @@ export class PlaceModel {
       throw new Error(e);
     }
   }
+  static async getPlace({ id }) {
+    try {
+      const result = await pool().query(
+        "SELECT * FROM places_detail WHERE id=$1",
+        [id]
+      );
+      const place = result.rows[0];
+      if (place) {
+        const result_media = await pool().query(
+          "SELECT id,url,type FROM media WHERE place_id=$1",
+          [place.id]
+        );
+        place["media"] = result_media.rows;
+      }
+      return place;
+    } catch (e) {
+      console.log("Model error:", e);
+      throw new Error(e);
+    }
+  }
+
   static async filterByCategory({ category, from = 0, numRows = 30 }) {
     try {
       let query = "";
