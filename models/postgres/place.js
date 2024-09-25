@@ -1,4 +1,6 @@
 import { pool } from "../../db.js";
+import { MediaModel } from "./media.js";
+import { TagModel } from "./tag.js";
 
 export class PlaceModel {
   static async getAll({ from = 0, numRows = 30 }) {
@@ -21,11 +23,12 @@ export class PlaceModel {
       );
       const place = result.rows[0];
       if (place) {
-        const result_media = await pool().query(
-          "SELECT id,url,type FROM media WHERE place_id=$1",
-          [place.id]
-        );
-        place["media"] = result_media.rows;
+        place["media"] = await MediaModel.getByPlace({
+          place_id: place.id,
+        });
+        place["tags"] = await TagModel.getByPlace({
+          place_id: place.id,
+        });
       }
       return place;
     } catch (e) {

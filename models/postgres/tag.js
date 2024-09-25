@@ -18,4 +18,17 @@ export class TagModel {
       throw new Error(e);
     }
   }
+
+  static async getByPlace({ place_id }) {
+    try {
+      const result = await pool().query(
+        "SELECT t.id,t.name FROM place_tags pt join tags t on t.id=pt.tag_id where pt.place_id=$1;",
+        [place_id]
+      );
+      return result.rows;
+    } catch (e) {
+      console.log("Model error:", e);
+      throw new Error(e);
+    }
+  }
 }
