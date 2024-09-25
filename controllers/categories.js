@@ -21,4 +21,13 @@ export class CategoriesController {
       res.status(500).send("error on Controller");
     }
   }
+  static async create(req, res) {
+    const { name } = req.body;
+    try {
+      const data = await CategoryModel.create({ name });
+      return res.json(data);
+    } catch (e) {
+      res.status(500).send("Error on Create");
+    }
+  }
 }

@@ -15,7 +15,7 @@ export const categoriesRouter = Router();
 
 categoriesRouter.get("/", CategoriesController.getAll);
 categoriesRouter.get("/:id", CategoriesController.getCategory);
+categoriesRouter.post("/", CategoriesController.create);
 /*
-categoriesRouter.post("/", PlaceController.createCatgory);
 categoriesRouter.update("/", PlaceController.filterByCategory);
 categoriesRouter.delete("/", PlaceController.filterByCategory); */

@@ -22,4 +22,24 @@ export class CategoryModel {
       throw new Error(e);
     }
   }
+  static async create({ name }) {
+    try {
+      const checkDuplicate = await pool().query(
+        "SELECT * from categories WHERE UPPER(name)=UPPER($1)",
+        [name]
+      );
+      if (checkDuplicate.rows.length == 0) {
+        const result = await pool().query(
+          "INSERT INTO categories(name) VALUES($1) RETURNING *",
+          [name]
+        );
+        return result.rows[0];
+      } else {
+        throw Error("La categoria ya existe");
+      }
+    } catch (e) {
+      console.log("Model error:", e);
+      throw new Error(e);
+    }
+  }
 }

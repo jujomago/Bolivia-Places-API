@@ -2,6 +2,7 @@ import express, { json } from "express"; // require -> commonJS
 import { corsMiddleware } from "./middlewares/cors.js";
 import morgan from "morgan";
 import { specs, swaggerUi } from "./swagger.js";
+import { PORT } from "./config.js";
 import {
   placesRouter,
   categoriesRouter,
@@ -22,8 +23,6 @@ app.use("/places_media", categoriesRouter);
 app.use("/categories", categoriesRouter);
 app.use("/cities", citiesRouter);
 app.use("/tags", tagsRouter);
-
-const PORT = process.env.PORT ?? 1234;
 
 app.listen(PORT, () => {
   console.log(`server listening on port http://localhost:${PORT}`);
