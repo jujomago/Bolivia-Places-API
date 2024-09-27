@@ -1,5 +1,5 @@
 import pg from "pg";
-import { dbConfig } from "../config";
+import { dbConfig } from "../config.js";
 
 let mainPool = null;
 
