@@ -1,4 +1,5 @@
-import { PlaceModel } from "../models/postgres/place.js";
+import { validatePartialPlace, validatePlace } from "#schemas/place.js";
+import { PlaceModel } from "../models/place.js";
 
 export class PlaceController {
   static async getAll(req, res) {
@@ -7,7 +8,7 @@ export class PlaceController {
       const data = await PlaceModel.getAll({ from, numRows: rows });
       res.json(data);
     } catch (e) {
-      console.log(e);
+      console.error(e.message);
       res.status(500).send("error on Controller");
     }
   }
@@ -18,7 +19,7 @@ export class PlaceController {
       if (data) return res.json(data);
       res.status(404).send("not found");
     } catch (e) {
-      console.log(e);
+      console.error(e.message);
       res.status(500).send("error on Controller");
     }
   }
@@ -34,7 +35,7 @@ export class PlaceController {
       });
       res.json(data);
     } catch (e) {
-      console.log(e);
+      console.error(e.message);
       res.status(500).send("error on Controller");
     }
   }
@@ -51,7 +52,7 @@ export class PlaceController {
       });
       res.json(data);
     } catch (e) {
-      console.log(e);
+      console.error(e.message);
       res.status(500).send("error on Controller");
     }
   }
@@ -68,7 +69,7 @@ export class PlaceController {
       });
       res.json(data);
     } catch (e) {
-      console.log(e);
+      console.error(e.message);
       res.status(500).send("error on Controller");
     }
   }
@@ -79,21 +80,68 @@ export class PlaceController {
       const data = await PlaceModel.search(search.toLocaleLowerCase());
       res.json(data);
     } catch (e) {
-      console.log(e);
+      console.error(e.message);
       res.status(500).send("error on Controller");
     }
   }
 
   static async getNearest(req, res) {
-    console.log("filterin by Category controller");
     const { lat, lon, radio } = req.params;
 
     try {
       const data = await PlaceModel.getNearest({ lat, lon, radio });
       res.json(data);
     } catch (e) {
-      console.log(e);
+      console.error(e.message);
       res.status(500).send("error on Controller");
+    }
+  }
+
+  static async create(req, res) {
+    const result = validatePlace(req.body);
+    if (!result.success)
+      return res.status(400).json({ error: JSON.parse(result.error.message) });
+
+    try {
+      const data = await PlaceModel.create(result.data);
+      return res.json(data);
+    } catch (e) {
+      console.error(e.message);
+      res.status(500).send("Error on Create:");
+    }
+  }
+
+  static async update(req, res) {
+    const result = validatePartialPlace(req.body);
+    if (!result.success)
+      return res.status(400).json({ error: JSON.parse(result.error.message) });
+
+    const { id } = req.params;
+    if (isNaN(parseInt(id)))
+      return res.status(400).json({ error: "you should sent an id" });
+
+    try {
+      const data = await PlaceModel.udpate(id, result.data);
+      return res.json(data);
+    } catch (e) {
+      console.error(e.message);
+      res.status(500).send("Error on Create:");
+    }
+  }
+
+  static async delete(req, res) {
+    const { id } = req.params;
+    if (isNaN(parseInt(id)))
+      return res.status(400).json({ error: "you should sent an id" });
+    try {
+      const data = await PlaceModel.delete({
+        id,
+      });
+      return data
+        ? res.json({ message: "deleted succesfully" })
+        : res.status(400).json({ message: "deleted wrong" });
+    } catch (e) {
+      res.status(500).send("Error on Delete");
     }
   }
 }

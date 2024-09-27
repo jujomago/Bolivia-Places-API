@@ -1,4 +1,4 @@
-import { pool } from "../../db.js";
+import { pool } from "#db.js";
 export class CategoryModel {
   static async getAll() {
     try {
@@ -37,6 +37,33 @@ export class CategoryModel {
       } else {
         throw Error("La categoria ya existe");
       }
+    } catch (e) {
+      console.log("Model error:", e);
+      throw new Error(e);
+    }
+  }
+
+  static async update({ id, name }) {
+    try {
+      const result = await pool().query(
+        "UPDATE categories set name=$1 WHERE id=$2",
+        [name, id]
+      );
+      console.log("result.rowsCount=", result.rowsCount);
+      console.log(result);
+      return result.rowCount === 1;
+    } catch (e) {
+      console.log("Model error:", e);
+      throw new Error(e);
+    }
+  }
+
+  static async delete({ id }) {
+    try {
+      const result = await pool().query("DELETE  from categories WHERE id=$1", [
+        id,
+      ]);
+      return result.rowCount === 1;
     } catch (e) {
       console.log("Model error:", e);
       throw new Error(e);

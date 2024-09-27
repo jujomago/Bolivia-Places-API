@@ -1,4 +1,4 @@
-import { pool } from "../../db.js";
+import { pool, withTransaction } from "#db.js";
 import { MediaModel } from "./media.js";
 import { TagModel } from "./tag.js";
 
@@ -127,6 +127,120 @@ export class PlaceModel {
     } catch (e) {
       console.log(e);
       throw new Error("Model error:", e);
+    }
+  }
+
+  static async create(place) {
+    const {
+      name,
+      description,
+      description_html,
+      location,
+      default_photo,
+      latitude,
+      longitude,
+      category_id,
+      city_id,
+      media,
+      tags,
+    } = place;
+
+    try {
+      let result;
+      await withTransaction(async (client) => {
+        result = await client.query(
+          `INSERT INTO 
+            places(name, description, description_html, location, default_photo, latitude, longitude, city_id, category_id) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
+          [
+            name,
+            description,
+            description_html,
+            location,
+            default_photo,
+            latitude,
+            longitude,
+            city_id,
+            category_id,
+          ]
+        );
+
+        const newPlaceId = result.rows[0].id;
+
+        if (media?.length > 0) {
+          await client.query(
+            `INSERT INTO media (place_id, url, type) 
+             SELECT * FROM UNNEST ($1::int[], $2::text[], $3::text[])`,
+            [
+              media.map(() => newPlaceId),
+              media.map((item) => item.url),
+              media.map((item) => item.type),
+            ]
+          );
+        }
+
+        if (tags?.length > 0) {
+          await client.query(
+            `INSERT INTO place_tags (place_id, tag_id) 
+             SELECT * FROM UNNEST ($1::int[], $2::int[])`,
+            [tags.map(() => newPlaceId), tags]
+          );
+        }
+      });
+      return result.rows[0];
+    } catch (e) {
+      console.error("Error creando place:", e);
+      throw new Error(e);
+    }
+  }
+  static async delete({ id }) {
+    try {
+      const result = await pool().query("DELETE  from places WHERE id=$1", [
+        id,
+      ]);
+      return result.rowCount === 1;
+    } catch (e) {
+      console.log("Model error:", e);
+      throw new Error(e);
+    }
+  }
+  static async udpate(id, place) {
+    const {
+      name,
+      description,
+      description_html,
+      location,
+      default_photo,
+      latitude,
+      longitude,
+      category_id,
+      city_id,
+      media,
+      tags,
+    } = place;
+    try {
+      const result = await pool().query(
+        `UPDATE places
+	          SET name=$1, description=$2, category_id=$3, description_html=$4,
+            default_photo=$5, latitude=$6, longitude=$7, city_id=$8, location=$9
+	        WHERE id=$10`,
+        [
+          name,
+          description,
+          category_id,
+          description_html,
+          default_photo,
+          latitude,
+          longitude,
+          city_id,
+          location,
+          id,
+        ]
+      );
+      return result.rowCount === 1;
+    } catch (e) {
+      console.log("Model error:", e);
+      throw new Error(e);
     }
   }
 }

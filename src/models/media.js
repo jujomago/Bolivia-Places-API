@@ -1,4 +1,4 @@
-import { pool } from "../../db.js";
+import { pool } from "#db.js";
 export class MediaModel {
   static async getByPlace({ place_id }) {
     try {

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { TagModel } from "../models/postgres/tag.js";
+import { TagModel } from "../models/tag.js";
 
 export const tagsRouter = Router();
 

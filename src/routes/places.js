@@ -10,3 +10,7 @@ placesRouter.get("/category/:id", PlaceController.filterByCategory);
 placesRouter.get("/city/:id", PlaceController.filterByCity);
 placesRouter.get("/search/:search", PlaceController.search);
 placesRouter.get("/nearest/:lat&:lon&:radio", PlaceController.getNearest);
+
+placesRouter.post("/", PlaceController.create);
+placesRouter.put("/:id", PlaceController.update);
+placesRouter.delete("/:id", PlaceController.delete);

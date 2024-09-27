@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { PlaceController } from "../controllers/places.js";
-import { CityModel } from "../models/postgres/city.js";
+import { CityModel } from "../models/city.js";
 
 export const citiesRouter = Router();
 
