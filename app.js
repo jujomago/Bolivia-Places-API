@@ -17,6 +17,9 @@ app.use(morgan("dev"));
 
 //app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
+app.get("/", (req, res) => {
+  res.send("I am alive");
+});
 app.use("/places", placesRouter);
 app.use("/places_media", categoriesRouter);
 app.use("/categories", categoriesRouter);
