@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { PlaceController } from "../controllers/places.js";
 import { CityModel } from "../models/city.js";
 
 export const citiesRouter = Router();
@@ -14,10 +13,4 @@ citiesRouter.get("/:id", async (req, res) => {
   if (data) return res.json(data);
   res.status(404).send("not found");
 });
-/*placesRouter.get("/category/:id", PlaceController.filterByCategory);
-placesRouter.get("/city/:id", PlaceController.filterByCity);
-placesRouter.get("/search/:search", PlaceController.search);
-placesRouter.get("/nearest/:lat&:lon&:radio", PlaceController.getNearest);
-
-placesRouter.get("/categories", PlaceController.getNearest);
- */
+// todo implement crud missing routes here
