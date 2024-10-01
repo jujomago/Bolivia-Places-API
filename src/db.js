@@ -1,10 +1,15 @@
 import pg from "pg";
-import { dbConfig } from "../config.js";
 
 let mainPool = null;
 
 function createPool() {
-  const pool = new pg.Pool({ ...dbConfig });
+  const pool = new pg.Pool({
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    port: process.env.DB_PORT,
+  });
   return pool;
 }
 
