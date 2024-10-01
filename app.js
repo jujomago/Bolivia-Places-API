@@ -1,6 +1,7 @@
-import express, { json } from "express"; // require -> commonJS
+import express from "express"; // require -> commonJS
 import { corsMiddleware } from "./src/middlewares/cors.js";
 import morgan from "morgan";
+import cookieParser from "cookie-parser";
 //import { specs, swaggerUi } from "./swagger.js";
 import { PORT } from "./config.js";
 import {
@@ -8,18 +9,24 @@ import {
   categoriesRouter,
   citiesRouter,
   tagsRouter,
+  usersRouter,
 } from "./src/routes/index.js";
 
 const app = express();
-app.use(json());
 app.disable("x-powered-by");
+app.set("view engine", "ejs");
+app.use(express.json());
+app.use(cookieParser());
 app.use(morgan("dev"));
 
 //app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 app.get("/", (req, res) => {
-  res.send("I am alive");
+  const username = req.cookies.token || null; // Obtiene el username desde las cookies, si está disponible
+  res.render("index", { username }); // Pasa la variable username al template
 });
+
+app.use("/users", usersRouter);
 app.use("/places", placesRouter);
 app.use("/places_media", categoriesRouter);
 app.use("/categories", categoriesRouter);

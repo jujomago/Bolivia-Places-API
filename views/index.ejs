@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login y Registro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            margin: 0 auto;
+            width: 300px;
+            text-align: left;
+        }
+        input {
+            margin-bottom: 10px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .welcome-message {
+            font-size: 1.5em;
+            color: green;
+        }
+        .logout-btn {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <% if (username) { %>
+            <div class="welcome-message">
+                <p>Hola, <%= username %>! Bienvenido de nuevo.</p>
+                <button class="logout-btn" id="logoutButton">Cerrar Sesión</button>
+            </div>
+        <% } else { %>
+            <div class="form-container">
+                <h2>Iniciar Sesión</h2>
+                <form id="loginForm">
+                    <input type="text" id="loginUserName" placeholder="Usuario" required>
+                    <input type="password" id="loginPassword" placeholder="Contraseña" required>
+                    <button type="submit">Iniciar Sesión</button>
+                </form>
+                <div id="loginMessage"></div>
+            </div>
+
+            <div class="form-container">
+                <h2>Registro</h2>
+                <form id="registerForm">
+                    <input type="text" id="registerUserName" placeholder="Nombre de Usuario" required>
+                    <input type="email" id="registerEmail" placeholder="Correo Electrónico" required>
+                    <input type="password" id="registerPassword" placeholder="Contraseña" required>
+                    <input type="text" id="registerFullName" placeholder="Nombre Completo" required>
+                    <button type="submit">Registrarse</button>
+                </form>
+                <div id="registerMessage"></div>
+            </div>
+        <% } %>
+    </div>
+
+    <script>
+        document.getElementById('loginForm')?.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const username = document.getElementById('loginUserName').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                const response = await fetch('/users/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, password }),
+                });
+
+                const data = await response.json();
+                document.getElementById('loginMessage').textContent = data.message || 'Inicio de sesión exitoso';
+                if (response.ok) {
+                    window.location.reload(); // Recarga la página después del login
+                }
+            } catch (error) {
+                document.getElementById('loginMessage').textContent = 'Error al iniciar sesión';
+            }
+        });
+
+        document.getElementById('registerForm')?.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const username = document.getElementById('registerUserName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const fullName = document.getElementById('registerFullName').value;
+
+            try {
+                const response = await fetch('/users/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, email, password, fullName }),
+                });
+                console.log('el repsonse: ' + JSON.stringify(response));
+
+                const data = await response.json();
+                document.getElementById('registerMessage').textContent = data.message || 'Registro exitoso';
+                if (response.ok) {
+                    window.location.reload(); // Recarga la página después del registro
+                }
+            } catch (error) {
+                console.log('el error:', error)
+                document.getElementById('registerMessage').textContent = 'Error al registrarse';
+            }
+        });
+
+        const logoutButton = document.getElementById('logoutButton');
+        if (logoutButton) {
+            logoutButton.addEventListener('click', async function () {
+                try {
+                    const response = await fetch('/users/logout', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    });
+
+                    if (response.ok) {
+                        window.location.reload(); // Recarga la página después de cerrar sesión
+                    }
+                } catch (error) {
+                    alert('Error al cerrar sesión');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
