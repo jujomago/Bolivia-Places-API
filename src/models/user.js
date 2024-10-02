@@ -8,7 +8,7 @@ export class UserModel {
       );
       return result.rows[0];
     } catch (error) {
-      throw new Error(e);
+      throw new Error(error.message);
     }
   }
 
@@ -19,7 +19,7 @@ export class UserModel {
       ]);
       return result.rows[0];
     } catch (error) {
-      throw new Error(e);
+      throw new Error(error.message);
     }
   }
 
