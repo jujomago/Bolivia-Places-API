@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node app.js",
-    "start:dev": "node --env-file=local.env app.js",
+    "dev": "node --env-file=local.env app.js",
     "start:prod": "node --env-file=prod.env app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
