@@ -3,9 +3,6 @@ import { CategoryModel } from "../models/category.js";
 
 export class CategoriesController {
   static async getAll(req, res) {
-    console.log("la cookie");
-    console.log(req.cookies.token);
-
     try {
       const data = await CategoryModel.getAll();
       res.json(data);

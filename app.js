@@ -16,6 +16,7 @@ const app = express();
 app.disable("x-powered-by");
 app.set("view engine", "ejs");
 app.use(express.json());
+app.use(corsMiddleware());
 app.use(cookieParser());
 app.use(morgan("dev"));
 
