@@ -9,6 +9,7 @@ function createPool() {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
     port: process.env.DB_PORT,
+    ssl: NODE_ENV === "production", // En producción, necesita SSL para conectarse con PostgreSQL
   });
   return pool;
 }
