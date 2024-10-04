@@ -11,6 +11,6 @@ tagsRouter.get("/:id", async (req, res) => {
   const { id } = req.params;
   const data = await TagModel.getTag({ id });
   if (data) return res.json(data);
-  res.status(404).send("not found");
+  res.status(404).json({error:"not found"});
 });
-// todo: impolement missing crud routes here
+// todo: implement missing crud routes here
