@@ -10,7 +10,7 @@ import {
   tagsRouter,
   usersRouter,
 } from "./src/routes/index.js";
-import { authenticateToken } from "#middlewares/authValidator.js";
+import { verifyToken } from "#middlewares/authValidator.js";
 export const PORT = process.env.PORT ?? 1234;
 const app = express();
 app.disable("x-powered-by");
@@ -27,6 +27,10 @@ app.use(morgan("dev"));
 app.get("/", (req, res) => {
   const username = req.cookies.token || null; // Obtiene el username desde las cookies, si está disponible
   res.render("index", { username }); // Pasa la variable username al template
+});
+
+app.get('/api/v1/isAuthenticated', verifyToken, (req, res) => {
+  res.json({ authenticated: true, user: req.user });
 });
 
 const apiRouter = express.Router();

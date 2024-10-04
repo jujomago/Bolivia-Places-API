@@ -11,6 +11,6 @@ citiesRouter.get("/:id", async (req, res) => {
   const { id } = req.params;
   const data = await CityModel.getCity({ id });
   if (data) return res.json(data);
-  res.status(404).send("not found");
+  res.status(404).json({error:"not found"});
 });
 // todo implement crud missing routes here

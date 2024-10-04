@@ -9,7 +9,7 @@ export class PlaceController {
       res.json(data);
     } catch (e) {
       console.error(e.message);
-      res.status(500).send("error on Controller");
+      res.status(500).json({error:"error on Controller"});
     }
   }
 
@@ -17,10 +17,10 @@ export class PlaceController {
     try {
       const data = await PlaceModel.getPlace({ id: req.params.id });
       if (data) return res.json(data);
-      res.status(404).send("not found");
+      res.status(404).json({error:"not found"});
     } catch (e) {
       console.error(e.message);
-      res.status(500).send("error on Controller");
+      res.status(500).json({error:"error on Controller"});
     }
   }
 
@@ -36,7 +36,7 @@ export class PlaceController {
       res.json(data);
     } catch (e) {
       console.error(e.message);
-      res.status(500).send("error on Controller");
+      res.status(500).json({error:"error on Controller"});
     }
   }
 
@@ -53,7 +53,7 @@ export class PlaceController {
       res.json(data);
     } catch (e) {
       console.error(e.message);
-      res.status(500).send("error on Controller");
+      res.status(500).json({error:"error on Controller"});
     }
   }
 
@@ -70,7 +70,7 @@ export class PlaceController {
       res.json(data);
     } catch (e) {
       console.error(e.message);
-      res.status(500).send("error on Controller");
+      res.status(500).json({error:"error on Controller"});
     }
   }
   static async search(req, res) {
@@ -81,7 +81,7 @@ export class PlaceController {
       res.json(data);
     } catch (e) {
       console.error(e.message);
-      res.status(500).send("error on Controller");
+      res.status(500).json({error:"error on Controller"} );
     }
   }
 
@@ -93,7 +93,7 @@ export class PlaceController {
       res.json(data);
     } catch (e) {
       console.error(e.message);
-      res.status(500).send("error on Controller");
+      res.status(500).json({error:"error on Controller"});
     }
   }
 
@@ -107,7 +107,7 @@ export class PlaceController {
       return res.json(data);
     } catch (e) {
       console.error(e.message);
-      res.status(500).send("Error on Create:");
+      res.status(500).json({error:"Error on Create:"});
     }
   }
 
@@ -118,14 +118,14 @@ export class PlaceController {
 
     const { id } = req.params;
     if (isNaN(parseInt(id)))
-      return res.status(400).json({ error: "you should sent an id" });
+      return res.status(400).json({error: "you should sent an id" });
 
     try {
       const data = await PlaceModel.udpate(id, result.data);
       return res.json(data);
     } catch (e) {
       console.error(e.message);
-      res.status(500).send("Error on Create:");
+      res.status(500).json({error:"Error on Create:"});
     }
   }
 
@@ -139,9 +139,9 @@ export class PlaceController {
       });
       return data
         ? res.json({ message: "deleted succesfully" })
-        : res.status(400).json({ message: "deleted wrong" });
+        : res.status(400).json({error:"deleted wrong"});
     } catch (e) {
-      res.status(500).send("Error on Delete");
+      res.status(500).json({error:"Error on Delete"});
     }
   }
 }

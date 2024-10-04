@@ -6,7 +6,7 @@ export class PlaceModel {
   static async getAll({ from = 0, numRows = 30 }) {
     try {
       const result = await pool().query(
-        "SELECT * FROM places_detail OFFSET $1 LIMIT $2",
+        "SELECT * FROM places_detail ORDER BY name ASC OFFSET $1 LIMIT $2 ",
         [from, numRows]
       );
       return result.rows;

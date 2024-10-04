@@ -17,7 +17,7 @@ export class UserController {
         username: result.data.username,
       });
       if (!user) {
-        return res.status(403).send("Invalid credentials username");
+        return res.status(403).json({error:"Invalid credentials username"});
       }
 
       const validPassword = await bcrypt.compare(
@@ -25,11 +25,11 @@ export class UserController {
         user.password
       );
       if (!validPassword) {
-        return res.status(403).send("Invalid credentials password");
+        return res.status(403).json({error:"Invalid credentials password"});
       }
 
       const accessToken = jwt.sign(
-        { id: user.id, username: user.username, role: user.role_id },
+        { id: user.id, username: user.username, fullname:user.full_name, role: user.role_id },
         ACCESS_TOKEN_SECRET,
         { expiresIn: "1h" }
       );
@@ -44,7 +44,7 @@ export class UserController {
         .json({ message: "Logged in successfully", accessToken });
     } catch (error) {
       console.error(error);
-      res.status(500).send("An error occurred during login");
+      res.status(500).json({error:"An error occurred during login"});
     }
   }
 
@@ -65,13 +65,13 @@ export class UserController {
       });
 
       if (userIsNotAvailable)
-        return res.status(400).send("The username is taken");
+        return res.status(400).json({error:"The username is taken"});
 
       const emailIsNotlAvailable = await UserModel.findByUserEmail({
         email: user.email,
       });
       if (emailIsNotlAvailable)
-        return res.status(400).send("The email already exists");
+        return res.status(400).json({error:"The email already exists"});
 
       const newUser = await UserModel.createUser(user);
       const { password: _, ...publicUser } = newUser;
@@ -79,11 +79,11 @@ export class UserController {
       res.status(201).json(publicUser);
     } catch (error) {
       console.error(error);
-      res.status(500).send("Error al crear el usuario");
+      res.status(500).json({error:"Error al crear el usuario"});
     }
   }
 
   static async logout(req, res) {
-    res.clearCookie(TOKEN_COOKIE_NAME).send("Logged out successfully");
+    res.clearCookie(TOKEN_COOKIE_NAME).json({message:"Logged out successfully"});
   }
 }
