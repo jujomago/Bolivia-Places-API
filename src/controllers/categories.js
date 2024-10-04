@@ -8,7 +8,7 @@ export class CategoriesController {
       res.json(data);
     } catch (e) {
       console.log(e);
-      res.status(500).send("error on Controller");
+      res.status(500).json({error:"error getting all categories"});
     }
   }
   static async getCategory(req, res) {
@@ -17,10 +17,10 @@ export class CategoriesController {
     try {
       const data = await CategoryModel.getCategory({ id });
       if (data) return res.json(data);
-      res.status(404).send("not found");
+      res.status(404).json({error:"id not found"});
     } catch (e) {
       console.log(e);
-      res.status(500).send("error on Controller");
+      res.status(500).json({error:"error getting the category"});
     }
   }
   static async create(req, res) {
@@ -32,7 +32,7 @@ export class CategoriesController {
       const data = await CategoryModel.create({ ...result.data });
       return res.json(data);
     } catch (e) {
-      res.status(500).send("Error on Create");
+      res.status(500).json({error:"error creaing the category"});
     }
   }
 
@@ -52,9 +52,9 @@ export class CategoriesController {
       });
       return data
         ? res.json({ message: "updated succesfully" })
-        : res.status(400).json({ message: "updated wrong" });
+        : res.status(400).json({ message: "errow updating a category" });
     } catch (e) {
-      res.status(500).send("Error on Update");
+      res.status(500).json({error:"error updating the category"});
     }
   }
 
@@ -68,9 +68,9 @@ export class CategoriesController {
       });
       return data
         ? res.json({ message: "deleted succesfully" })
-        : res.status(400).json({ message: "deleted wrong" });
+        : res.status(400).json({error:"deleted wrong"});
     } catch (e) {
-      res.status(500).send("Error on Delete");
+      res.status(500).json({error:"error deleting the category"});
     }
   }
 }

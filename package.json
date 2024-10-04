@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "node --env-file=local.env app.js",
-    "start:prod": "node --env-file=prod.env app.js",
+    "prod": "node --env-file=prod.env app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

@@ -49,8 +49,6 @@ export class CategoryModel {
         "UPDATE categories set name=$1 WHERE id=$2",
         [name, id]
       );
-      console.log("result.rowsCount=", result.rowsCount);
-      console.log(result);
       return result.rowCount === 1;
     } catch (e) {
       console.log("Model error:", e);

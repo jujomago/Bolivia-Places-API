@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { PlaceController } from "../controllers/places.js";
-import { authenticateToken } from "#middlewares/authValidator.js";
+import { verifyToken } from "#middlewares/authValidator.js";
 
 export const placesRouter = Router();
 
@@ -12,6 +12,6 @@ placesRouter.get("/city/:id", PlaceController.filterByCity);
 placesRouter.get("/search/:search", PlaceController.search);
 placesRouter.get("/nearest/:lat&:lon&:radio", PlaceController.getNearest);
 
-placesRouter.post("/", authenticateToken, PlaceController.create);
-placesRouter.put("/:id", authenticateToken, PlaceController.update);
-placesRouter.delete("/:id", authenticateToken, PlaceController.delete);
+placesRouter.post("/", verifyToken, PlaceController.create);
+placesRouter.put("/:id", verifyToken, PlaceController.update);
+placesRouter.delete("/:id", verifyToken, PlaceController.delete);
