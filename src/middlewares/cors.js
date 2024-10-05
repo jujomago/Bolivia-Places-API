@@ -5,8 +5,8 @@ const ACCEPTED_ORIGINS = [
   "http://localhost:3000",
   "http://localhost:5174",
   "http://localhost:5173",
-  "https://jujomago.retool.com/",
-  "https://jujomago.github.io/"
+  "https://jujomago.retool.com",
+  "https://jujomago.github.io",
 ];
 
 export const corsMiddleware = ({ acceptedOrigins = ACCEPTED_ORIGINS } = {}) =>
