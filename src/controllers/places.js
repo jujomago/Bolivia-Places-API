@@ -74,8 +74,7 @@ export class PlaceController {
     }
   }
   static async search(req, res) {
-    const { search } = req.params;
-    console.log("el val:", search);
+    const { search } = req.params;    
     try {
       const data = await PlaceModel.search(search.toLocaleLowerCase());
       res.json(data);

@@ -51,7 +51,7 @@ export class PlaceModel {
 
       return result.rows;
     } catch (e) {
-      console.log(e);
+      console.error(e.message);
       throw new Error("Model error:", e);
     }
   }
@@ -74,7 +74,7 @@ export class PlaceModel {
       const result = await pool().query(query, [tag, from, numRows]);
       return result.rows;
     } catch (e) {
-      console.log(e);
+      console.error(e.message);
       throw new Error("Model error:", e);
     }
   }
@@ -89,14 +89,13 @@ export class PlaceModel {
       const result = await pool().query(query, [city, from, numRows]);
       return result.rows;
     } catch (e) {
-      console.log(e);
+      console.error(e.message);
       throw new Error("Model error:", e);
     }
   }
   static async search(strSearch) {
     try {
-      const searchQuery = `%${strSearch.toLowerCase()}%`;
-      console.log("searchQuery:", searchQuery);
+      const searchQuery = `%${strSearch.toLowerCase()}%`;      
       const result = await pool().query(
         `SELECT * from places_detail
          WHERE LOWER(name) LIKE $1 OR LOWER(description) LIKE $1`,
@@ -104,12 +103,13 @@ export class PlaceModel {
       );
       return result.rows;
     } catch (e) {
-      console.log(e);
+      console.error(e.message);
       throw new Error("Model error:", e);
     }
   }
 
-  static async getNearest({ lat, lon, radio }) {
+  // default 10 kilometer of radio
+  static async getNearest({ lat, lon, radio=10 }) {
     try {
       const query = `
         SELECT * FROM places_detail
@@ -125,7 +125,7 @@ export class PlaceModel {
       const result = await pool().query(query, [lat, lon, radio]);
       return result.rows;
     } catch (e) {
-      console.log(e);
+      console.error(e.message);
       throw new Error("Model error:", e);
     }
   }

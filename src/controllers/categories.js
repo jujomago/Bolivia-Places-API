@@ -7,7 +7,7 @@ export class CategoriesController {
       const data = await CategoryModel.getAll();
       res.json(data);
     } catch (e) {
-      console.log(e);
+      console.error(e.message);
       res.status(500).json({error:"error getting all categories"});
     }
   }
@@ -19,7 +19,7 @@ export class CategoriesController {
       if (data) return res.json(data);
       res.status(404).json({error:"id not found"});
     } catch (e) {
-      console.log(e);
+      console.error(e.message);
       res.status(500).json({error:"error getting the category"});
     }
   }

@@ -9,8 +9,7 @@ export class CategoryModel {
       throw new Error(e);
     }
   }
-  static async getCategory({ id }) {
-    console.log("requesting id", id);
+  static async getCategory({ id }) {    
     try {
       const result = await pool().query(
         "SELECT * FROM categories WHERE id=$1",

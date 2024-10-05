@@ -10,8 +10,7 @@ const categorySchema = z.object({
 export const idCategorySchema = z.number().int().positive();
 
 export function validateCategory(input) {
-  const resultValidation = categorySchema.safeParse(input);
-  console.log("validateCategory:");
+  const resultValidation = categorySchema.safeParse(input);  
   console.log(JSON.stringify(resultValidation, null, 3));
   return resultValidation;
 }
