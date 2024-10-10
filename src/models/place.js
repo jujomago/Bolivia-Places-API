@@ -166,17 +166,9 @@ export class PlaceModel {
         );
 
         const newPlaceId = result.rows[0].id;
-
         if (media?.length > 0) {
-          await client.query(
-            `INSERT INTO media (place_id, url, type) 
-             SELECT * FROM UNNEST ($1::int[], $2::text[], $3::text[])`,
-            [
-              media.map(() => newPlaceId),
-              media.map((item) => item.url),
-              media.map((item) => item.type),
-            ]
-          );
+          // here we are sending connection because we it is in a transaction
+          await MediaModel.create({media,placeId: newPlaceId, connection:client})    
         }
 
         if (tags?.length > 0) {
@@ -190,7 +182,7 @@ export class PlaceModel {
       return result.rows[0];
     } catch (e) {
       console.error("Error creando place:", e);
-      throw new Error(e);
+      throw new Error( e.message );
     }
   }
   static async delete({ id }) {
@@ -201,7 +193,7 @@ export class PlaceModel {
       return result.rowCount === 1;
     } catch (e) {
       console.log("Model error:", e);
-      throw new Error(e);
+       throw new Error( e );
     }
   }
   static async udpate(id, place) {

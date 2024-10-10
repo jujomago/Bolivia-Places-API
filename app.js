@@ -11,6 +11,7 @@ import {
   usersRouter,
 } from "./src/routes/index.js";
 import { verifyToken } from "#middlewares/authValidator.js";
+import { mediaRouter } from "#routes/media.js";
 export const PORT = process.env.PORT ?? 1234;
 const app = express();
 app.disable("x-powered-by");
@@ -41,6 +42,7 @@ apiRouter.use("/places_media", categoriesRouter);
 apiRouter.use("/categories", categoriesRouter);
 apiRouter.use("/cities", citiesRouter);
 apiRouter.use("/tags", tagsRouter);
+apiRouter.use("/media", mediaRouter);
 
 // Aplica el prefijo /api/v1 a todas las rutas agrupadas
 app.use("/api/v1", apiRouter);
