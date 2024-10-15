@@ -7,6 +7,7 @@ const ACCEPTED_ORIGINS = [
   "http://localhost:5173",
   "https://jujomago.retool.com",
   "https://jujomago.github.io",
+  "https://bolivia-api.com",
 ];
 
 export const corsMiddleware = ({ acceptedOrigins = ACCEPTED_ORIGINS } = {}) =>
@@ -22,5 +23,5 @@ export const corsMiddleware = ({ acceptedOrigins = ACCEPTED_ORIGINS } = {}) =>
 
       return callback(new Error("Not allowed by CORS"));
     },
-    credentials:true
+    credentials: true,
   });
