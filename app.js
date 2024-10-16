@@ -23,11 +23,12 @@ app.use(morgan("dev"));
 
 //app.use(authenticateToken);
 
-//app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 app.get("/", (req, res) => {
+  
   const username = req.cookies.token || null; // Obtiene el username desde las cookies, si está disponible
-  res.render("index", { username }); // Pasa la variable username al template
+  res.send('Welcome to the Bolivia places api :)');
+  //res.render("index", { username }); // Pasa la variable username al template
 });
 
 app.get('/api/v1/isAuthenticated', verifyToken, (req, res) => {
