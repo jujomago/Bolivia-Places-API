@@ -31,8 +31,10 @@ export class UserController {
       const accessToken = jwt.sign(
         { id: user.id, username: user.username, fullname:user.full_name, role: user.role_id },
         ACCESS_TOKEN_SECRET,
-        { expiresIn: "1h" }
+        { expiresIn: "1h" } 
       );
+ 
+      const { password: _, id, ...publicUser } = user;
 
       res
         .cookie(TOKEN_COOKIE_NAME, accessToken, {
@@ -41,7 +43,12 @@ export class UserController {
           sameSite: "strict",
           maxAge: 1000 * 60 * 60,
         })
-        .json({ message: "Logged in successfully", accessToken });
+        .json(
+          { 
+             message: "Logged in successfully", 
+             accessToken,
+             user: {...publicUser,fullname:publicUser.full_name } })
+          ; 
     } catch (error) {
       console.error(error);
       res.status(500).json({error:"An error occurred during login"});

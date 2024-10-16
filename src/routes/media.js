@@ -3,10 +3,11 @@ import { MediaModel } from "#models/media.js";
 
 export const mediaRouter = Router();
 
-mediaRouter.get("/place/:id", async (req, res) => {
+/* mediaRouter.get("/place/:id", async (req, res) => {
+  console.log('llega aqui', req);
   const data = await MediaModel.getByPlace(req.params.id);
   res.json(data);
-});
+}); */
 /* mediaRouter.post("/", async (req, res) => {
   const { placeId, media } = req.body;
   const data = await MediaModel.create({ placeId, media });
