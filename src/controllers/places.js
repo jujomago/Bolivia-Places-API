@@ -143,4 +143,45 @@ export class PlaceController {
       res.status(500).json({error:"Error on Delete"});
     }
   }
+
+
+  static async addImages(req, res) {
+    const result = validatePartialPlace(req.body);
+    if (!result.success)
+      return res.status(400).json({ error: JSON.parse(result.error.message) });
+    
+    const { id } = req.params;
+    if (isNaN(parseInt(id)))
+      return res.status(400).json({error: "you should sent an id" });
+
+    try {
+      const data = await PlaceModel.addImages({media:result.data.media,placeId:id});
+      return res.json(data);
+    } catch (e) {
+      console.error(e.message);
+      res.status(500).json({error:"Error on Create:"});
+    }
+  }
+  // TODO: ADD VALIDATION FOR THIS TYPE WHEN REMOVING AN IMAGE
+  /*
+  {
+    "id":2,    
+    "type":"video"
+}
+  */
+  static async removeImage(req, res) {
+      const { id: placeId } = req.params;
+      const {id:mediaId} = req.body;
+    if (isNaN(parseInt(placeId)))
+      return res.status(400).json({error: "you should sent an id" });
+
+    try {
+      const data = await PlaceModel.removeImage({mediaId, placeId});
+      return res.json(data);
+    } catch (e) {
+      console.error(e.message);
+      res.status(500).json({error:"Error on Create:"});
+    }
+  }
+
 }
