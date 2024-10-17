@@ -15,11 +15,10 @@ placesRouter.get("/nearest/:lat&:lon&:radio", PlaceController.getNearest);
 placesRouter.get("/:id/images", async (req, res) => {
     const data = await MediaModel.getByPlace({place_id:req.params.id});
     res.json(data);
-  });
-  
-  /*
-
-
+});
+//TODO: DOCUMENT MISSING ENDPOINTS
 placesRouter.post("/", verifyToken, PlaceController.create);
 placesRouter.put("/:id", verifyToken, PlaceController.update);
-placesRouter.delete("/:id", verifyToken, PlaceController.delete); */
+placesRouter.delete("/:id", verifyToken, PlaceController.delete); 
+placesRouter.post("/:id/add-images", verifyToken, PlaceController.addImages);
+placesRouter.delete("/:id/remove-image", verifyToken, PlaceController.removeImage);

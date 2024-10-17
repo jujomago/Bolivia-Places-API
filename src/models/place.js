@@ -235,4 +235,29 @@ export class PlaceModel {
       throw new Error(e);
     }
   }
+
+  
+  static async addImages({media,placeId}) {
+    try {
+      const result_rows = await MediaModel.create({media,placeId});
+      return result_rows;
+    } catch (e) {
+      console.log("Model error:", e);
+      throw new Error(e);
+    }
+  }
+
+  static async removeImage({mediaId,placeId}) {
+    try {
+      const result = await pool().query(
+        `DELETE FROM media WHERE id=$1 AND place_id=$2`,
+        [mediaId, placeId]
+      );
+      return result.rowCount === 1;
+    } catch (e) {
+      console.error(e.message);
+      throw new Error("Model error:", e);
+    }
+  }
+
 }
