@@ -15,6 +15,15 @@ export class PlaceModel {
       throw new Error(e);
     }
   }
+  static async getLastIds() {
+    try {
+      const result = await pool().query("select  id from places ORDER BY ID desc limit 10");
+      return result.rows;
+    } catch (e) {
+      console.log("Model error:", e);
+      throw new Error(e);
+    }
+  }
   static async getPlace({ id }) {
     try {
       const result = await pool().query(
@@ -259,5 +268,20 @@ export class PlaceModel {
       throw new Error("Model error:", e);
     }
   }
+
+  static async setDefaultImage({url,placeId}) {
+    try {
+      const result = await pool().query(
+        `update places set default_photo=$1 where id=$2`,
+        [url, placeId]
+      );
+      
+      return result.rowCount === 1;
+    } catch (e) {
+      console.error(e.message);
+      throw new Error("Model error:", e);
+    }
+  }
+
 
 }

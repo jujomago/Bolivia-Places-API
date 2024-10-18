@@ -6,6 +6,7 @@ import { MediaModel } from "#models/media.js";
 export const placesRouter = Router();
 
 placesRouter.get("/", PlaceController.getAll);
+placesRouter.get("/ids", PlaceController.getLastIds);
 placesRouter.get("/:id", PlaceController.getPlace);
 placesRouter.get("/tag/:id", PlaceController.filterByTag);
 placesRouter.get("/category/:id", PlaceController.filterByCategory);
@@ -22,3 +23,4 @@ placesRouter.put("/:id", verifyToken, PlaceController.update);
 placesRouter.delete("/:id", verifyToken, PlaceController.delete); 
 placesRouter.post("/:id/add-images", verifyToken, PlaceController.addImages);
 placesRouter.delete("/:id/remove-image", verifyToken, PlaceController.removeImage);
+placesRouter.patch("/:id/set-default-image", verifyToken, PlaceController.setDefaultImage);
