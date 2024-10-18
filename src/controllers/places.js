@@ -13,6 +13,17 @@ export class PlaceController {
     }
   }
 
+  static async getLastIds(req, res) {    
+    try {
+      const data = await PlaceModel.getLastIds();      
+      const rawIds = data.map((d)=>d.id);      
+      res.json(rawIds);
+    } catch (e) {
+      console.error(e.message);
+      res.status(500).json({error:"error on Controller"});
+    }
+  }
+
   static async getPlace(req, res) {
     try {
       const data = await PlaceModel.getPlace({ id: req.params.id });
@@ -184,4 +195,20 @@ export class PlaceController {
     }
   }
 
+
+  
+    static async setDefaultImage(req, res) {
+      const { id: placeId } = req.params;
+      const {url} = req.body;
+    if (isNaN(parseInt(placeId)))
+      return res.status(400).json({error: "you should sent an id" });
+
+    try {
+      const data = await PlaceModel.setDefaultImage({url, placeId});
+      return res.json(data);
+    } catch (e) {
+      console.error(e.message);
+      res.status(500).json({error:"Error on Create:"});
+    }
+  }
 }
