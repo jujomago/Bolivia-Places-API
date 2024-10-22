@@ -2,18 +2,20 @@ import { Router } from "express";
 import { PlaceController } from "../controllers/places.js";
 import { verifyToken } from "#middlewares/authValidator.js";
 import { MediaModel } from "#models/media.js";
+import apicache from 'apicache'
 
 export const placesRouter = Router();
+let cache = apicache.middleware
 
-placesRouter.get("/", PlaceController.getAll);
-placesRouter.get("/ids", PlaceController.getLastIds);
-placesRouter.get("/:id", PlaceController.getPlace);
-placesRouter.get("/tag/:id", PlaceController.filterByTag);
-placesRouter.get("/category/:id", PlaceController.filterByCategory);
-placesRouter.get("/city/:id", PlaceController.filterByCity);
-placesRouter.get("/search/:search", PlaceController.search);
-placesRouter.get("/nearest/:lat&:lon&:radio", PlaceController.getNearest);
-placesRouter.get("/:id/images", async (req, res) => {
+placesRouter.get("/", cache('1 minutes'), PlaceController.getAll);
+placesRouter.get("/ids", cache('10 minutes'), PlaceController.getLastIds);
+placesRouter.get("/:id",cache('1 minutes'), PlaceController.getPlace);
+placesRouter.get("/tag/:id", cache('1 minutes'),PlaceController.filterByTag);
+placesRouter.get("/category/:id", cache('1 minutes'),PlaceController.filterByCategory);
+placesRouter.get("/city/:id", cache('1 minutes'),PlaceController.filterByCity);
+placesRouter.get("/search/:search", cache('1 minutes'), PlaceController.search);
+placesRouter.get("/nearest/:lat&:lon&:radio", cache('1 minutes'),PlaceController.getNearest);
+placesRouter.get("/:id/images", cache('1 minutes'), async (req, res) => {
     const data = await MediaModel.getByPlace({place_id:req.params.id});
     res.json(data);
 });
