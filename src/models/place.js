@@ -17,7 +17,7 @@ export class PlaceModel {
   }
   static async getLastIds() {
     try {
-      const result = await pool().query("select  id from places ORDER BY ID desc limit 10");
+      const result = await pool().query("select  id from places ORDER BY RANDOM() limit 10");
       return result.rows;
     } catch (e) {
       console.log("Model error:", e);
