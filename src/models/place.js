@@ -220,24 +220,45 @@ export class PlaceModel {
       tags,
     } = place;
     try {
-      const result = await pool().query(
-        `UPDATE places
+
+
+      let result;
+      await withTransaction(async (client) => {
+        result = await client.query(
+          `UPDATE places
 	          SET name=$1, description=$2, category_id=$3, description_html=$4,
             default_photo=$5, latitude=$6, longitude=$7, city_id=$8, location=$9
 	        WHERE id=$10`,
-        [
-          name,
-          description,
-          category_id,
-          description_html,
-          default_photo,
-          latitude,
-          longitude,
-          city_id,
-          location,
-          id,
-        ]
-      );
+          [
+            name,
+            description,
+            category_id,
+            description_html,
+            default_photo,
+            latitude,
+            longitude,
+            city_id,
+            location,
+            id,
+          ]
+        );              
+
+        if (tags?.length > 0) {
+          
+          await client.query(
+            `DELETE FROM place_tags
+              WHERE place_id = $1`,
+            [id] 
+          );
+
+          await client.query(
+            `INSERT INTO place_tags (place_id, tag_id) 
+             SELECT * FROM UNNEST ($1::int[], $2::int[])`,
+            [tags.map(() => id), tags]
+          );
+        }
+      });      
+
       return result.rowCount === 1;
     } catch (e) {
       console.log("Model error:", e);
