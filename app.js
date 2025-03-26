@@ -23,15 +23,13 @@ app.use(morgan("dev"));
 
 //app.use(authenticateToken);
 
-
 app.get("/", (req, res) => {
-  
   const username = req.cookies.token || null; // Obtiene el username desde las cookies, si está disponible
-  res.send('Welcome to the Bolivia places api :)');
+  res.send("Welcome to the Bolivia places api :)");
   //res.render("index", { username }); // Pasa la variable username al template
 });
 
-app.get('/api/v1/isAuthenticated', verifyToken, (req, res) => {
+app.get("/api/v1/isAuthenticated", verifyToken, (req, res) => {
   res.json({ authenticated: true, user: req.user });
 });
 
@@ -47,7 +45,8 @@ apiRouter.use("/media", mediaRouter);
 
 // Aplica el prefijo /api/v1 a todas las rutas agrupadas
 app.use("/api/v1", apiRouter);
-
+/*
 app.listen(PORT, () => {
   console.log(`server listening on port http://localhost:${PORT}`);
-});
+});*/
+export default app;
