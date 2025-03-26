@@ -1,1 +1,2 @@
-# Turistic Places of Bolivia API
+# Turistic Places of Bolivia API. 
+
