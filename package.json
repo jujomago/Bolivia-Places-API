@@ -5,9 +5,9 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "start": "node app.js",
-    "dev": "node --env-file=local.env app.js",
-    "prod": "node --env-file=prod.env app.js",
+    "start": "node server.js",
+    "dev": "node --env-file=local.env server.js",
+    "prod": "node --env-file=prod.env server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
