@@ -5,7 +5,7 @@ const mediaSchema = z.object({
   type: z.enum(["video", "foto"]), // Solo permite "video" o "image"
 });
 
-const placeSchema = z.object({
+export const placeSchema = z.object({
   name: z.string({
     required_error: "Name is required",
     invalid_type_error: "Name must be an string",

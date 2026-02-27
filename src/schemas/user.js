@@ -1,6 +1,6 @@
 import z from "zod";
 
-const userSchema = z.object({
+export const userSchema = z.object({
   username: z
     .string()
     .nonempty({ message: "Name is required" }) // Para requerir el campo

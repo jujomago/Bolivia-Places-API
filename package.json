@@ -17,6 +17,8 @@
     "#*": "./src/*"
   },
   "dependencies": {
+    "@asteasolutions/zod-to-openapi": "^8.4.1",
+    "@scalar/express-api-reference": "^0.8.46",
     "apicache": "^1.6.3",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",
@@ -26,6 +28,7 @@
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "pg": "8.13.0",
-    "zod": "3.21.4"
+    "zod": "3.21.4",
+    "zod-to-openapi": "^0.2.1"
   }
 }

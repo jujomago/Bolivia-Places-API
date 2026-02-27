@@ -2,6 +2,8 @@ import express from "express"; // require -> commonJS
 import { corsMiddleware } from "./src/middlewares/cors.js";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
+import { apiReference } from "@scalar/express-api-reference";
+import { getOpenApiDocumentation } from "./src/docs/openapi.js";
 //import { specs, swaggerUi } from "./swagger.js";
 import {
   placesRouter,
@@ -45,6 +47,15 @@ apiRouter.use("/media", mediaRouter);
 
 // Aplica el prefijo /api/v1 a todas las rutas agrupadas
 app.use("/api/v1", apiRouter);
+
+app.use(
+  "/reference",
+  apiReference({
+    spec: {
+      content: getOpenApiDocumentation(),
+    },
+  })
+);
 /*
 app.listen(PORT, () => {
   console.log(`server listening on port http://localhost:${PORT}`);

@@ -6,9 +6,11 @@ function createPool() {
   // Si existe una cadena de conexión, úsala primero
   if (process.env.DATABASE_URL) {
     console.log("entra aqui");
+    const isLocal = process.env.DATABASE_URL.includes("localhost") || process.env.NODE_ENV !== "production";
+
     return new pg.Pool({
       connectionString: process.env.DATABASE_URL,
-      ssl: {
+      ssl: isLocal ? false : {
         rejectUnauthorized: false, // Esto puede ser necesario para conectarse con Supabase
       },
     });
